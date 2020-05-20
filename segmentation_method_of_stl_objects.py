@@ -14,6 +14,7 @@ import trimesh
 
 #Импорт основных переменных метода
 from main_variables_for_segmentation import Main_variables
+
 #Импорт вспомогательных функций
 import supporting_functions_of_segmentation as sff
 # Класс импорта stl

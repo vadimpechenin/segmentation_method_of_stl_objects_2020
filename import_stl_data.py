@@ -41,5 +41,18 @@ class Import_stl_data():
             mesh.normals = np.array(mesh_load_mat['normals'])
         if self.pl[0] == 1:
             #mesh.show()
-            pass
+            struct_seg=np.array([1])
+            num_segments = np.array([1])
+            color_segmetns=np.array([1])
+            # Многомерную матрицу зададим в виде двумерного списка, у которого в ячейках будут двумерные матрицы
+            surface_seg = []
+            nr = 1  # количество строк
+            nc = 1  # количество столбцов
+            for r in range(nr):
+                surface_seg.append([])
+                for c in range(nc):
+                    surface_seg[r].append([])
+                    surface_seg[r][c].append(mesh.faces)  # добавляем очередной элемент в строку
+            title='Загруженный для сегментации объект stl '
+            sff.plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,mesh.vertices,title)
         return mesh
