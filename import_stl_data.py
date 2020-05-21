@@ -7,6 +7,8 @@ import numpy as np
 import supporting_functions_of_segmentation as sff
 #Импорт класса сетка
 from mesh_class import Mesh_class
+import copy
+
 
 class Import_stl_data():
     """Класс для импорта структуры stl из файла"""
@@ -22,12 +24,12 @@ class Import_stl_data():
             mesh_load = trimesh.load(file_path_string)
             num_vertices,num_faces =mesh_load.vertices.shape[0],mesh_load.faces.shape[0]
             mesh = Mesh_class(num_vertices, num_faces)
-            vertices = mesh_load.vertices
-            faces =  mesh_load.faces
-            normals = mesh_load.face_normals
-            mesh.vertices =  mesh_load.vertices
-            mesh.faces = mesh_load.faces
-            mesh.normals = mesh_load.face_normals
+            vertices = copy.deepcopy(mesh_load.vertices)
+            faces =  copy.deepcopy(mesh_load.faces)
+            normals = copy.deepcopy(mesh_load.face_normals)
+            mesh.vertices =  copy.deepcopy(mesh_load.vertices)
+            mesh.faces = copy.deepcopy(mesh_load.faces)
+            mesh.normals = copy.deepcopy(mesh_load.face_normals)
             scipy.io.savemat(self.path_file + name_safe+'.mat', {'num_vertices': num_vertices,
                                                                  'num_faces': num_faces,
                                                                  'vertices': vertices,
