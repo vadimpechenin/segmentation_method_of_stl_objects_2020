@@ -19,11 +19,17 @@ from main_variables_for_segmentation import Main_variables
 import supporting_functions_of_segmentation as sff
 # Класс импорта stl
 from import_stl_data import Import_stl_data
+# Класс вычисления главных кривизн
+import сalculation_of_the_curvature_tensor as cct
 
 ex_m_var=Main_variables()
 
 stl_data=Import_stl_data(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file)
-
+# 1 Этап. Загрузка структуры stl
 mesh = stl_data.import_data()
+# 2 Этап. Вычисления тензора кривизн (главных кривизн)
+mesh=cct.calculation_curvature_tensor(mesh,ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file)
+
+
 
 
