@@ -8,6 +8,7 @@ import random
 #https://trimsh.org/trimesh.visual.color.html
 import trimesh
 import copy
+from vtkplotter import trimesh2vtk, show
 
 def name_of_results(pl_sphere_cyl):
     """Функция для сохранения имени результатов этапов метода"""
@@ -41,6 +42,8 @@ def name_of_results(pl_sphere_cyl):
     return name_file
 
 def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,title):
+    # https://pydoc.net/trimesh/2.22.26/trimesh.visual/
+    #https://pypi.org/project/trimesh/
     """Функция для прорисовки stl объекта"""
     # struct_seg - структура участков (если поверхность сегментирована, то больше 1)
     # num_segments - структура количества фасет
@@ -58,7 +61,9 @@ def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,t
                                        process=False)
                 # Если объект один
                 if (struct_seg.shape[0] == 1) & (num_segments.shape[0] == 1):
-                    pass
+                    #mesh.visual.face_colors = [200, 200, 250, 100]
+                    mesh.visual.face_colors = [200, 200, 250]
+                    #mesh.visual.color.ColorVisuals(mesh=None, face_colors=[200, 200, 250], vertex_colors=None)
                 else:
                     facet = range(faces.shape[0])
                     mesh.visual.face_colors[facet] = trimesh.visual.random_color()
@@ -91,6 +96,40 @@ def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,t
         ax.set_zlim(np.amin(vertices[:][2]) - 2, np.amax(vertices[:][2]) + 2)
         ax.auto_scale_xyz(1, 1, 1)
         pyplot.show()
+
+def plot_stl_vertices_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,Cmin,Cmax,title):
+    """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
+    for j in range(struct_seg.shape[0]):
+        for i in range(num_segments.shape[0]):
+            faces = copy.deepcopy(surface_seg[j][i][0])
+            mesh = trimesh.Trimesh(vertices=vertices,
+                                   faces=faces,
+                                   process=False)
+
+            vtkmeshes = trimesh2vtk(mesh)
+            vtkmeshes1 = trimesh2vtk(mesh)
+
+            # vtkmeshes.pointColors(Cmin, cmap='jet')
+            Cmin1, Cmax1 = copy.deepcopy(Cmin), copy.deepcopy(Cmax)
+            min_max_Cmin = np.array([np.mean(Cmin) - np.std(Cmin), np.mean(Cmin) + np.std(Cmin)])
+            min_max_Cmax = np.array([np.mean(Cmax) - np.std(Cmax), np.mean(Cmax) + np.std(Cmax)])
+            for i in range(Cmin.shape[0]):
+                if Cmin1[i] > min_max_Cmin[1]:
+                    Cmin1[i] = min_max_Cmin[1]
+                elif Cmin1[i] < min_max_Cmin[0]:
+                    Cmin1[i] = min_max_Cmin[0]
+                if Cmax1[i] > min_max_Cmax[1]:
+                    Cmax1[i] = min_max_Cmax[1]
+                elif Cmax1[i] < min_max_Cmax[0]:
+                    Cmax1[i] = min_max_Cmax[0]
+
+            vtkmeshes.pointColors(Cmin1, cmap='jet')
+
+            vtkmeshes1.pointColors(Cmax1, cmap='jet')
+
+            vtkmeshes.addScalarBar(title="Cmin")
+            vtkmeshes1.addScalarBar(title="Cmax")
+            show([vtkmeshes, vtkmeshes1], N=2, bg='w', axes=1)
 
 def patchnormals_double(Fa,Fb,Fc,Vx,Vy,Vz):
     # Функция вычисления составляющих нормалей в вершинах stl
