@@ -41,6 +41,37 @@ def name_of_results(pl_sphere_cyl):
 
     return name_file
 
+def num_of_klasters(pl_sphere_cyl):
+    """Функция для сохранения количества кластеров"""
+    if (pl_sphere_cyl[0]==1)&(pl_sphere_cyl[1]==1):
+        N_klast = 9
+    elif (pl_sphere_cyl[0]==1)&(pl_sphere_cyl[1]==2):
+        N_klast = 13
+    elif  (pl_sphere_cyl[0]==1)&(pl_sphere_cyl[1]==3):
+        N_klast = 9
+    elif  (pl_sphere_cyl[0]==1)&(pl_sphere_cyl[1]==4):
+        N_klast=3
+    elif (pl_sphere_cyl[0]==2)&(pl_sphere_cyl[1]==1):
+        N_klast = 9
+    elif  (pl_sphere_cyl[0]==2)&(pl_sphere_cyl[1]==2):
+        N_klast=13
+    elif (pl_sphere_cyl[0]==2)&(pl_sphere_cyl[1]==3):
+        N_klast=9
+    elif (pl_sphere_cyl[0]==2)&(pl_sphere_cyl[1]==4):
+        N_klast = 3
+    elif  (pl_sphere_cyl[0]==3)&(pl_sphere_cyl[1]==2):
+        N_klast = 16
+    elif  (pl_sphere_cyl[0]==3)&(pl_sphere_cyl[1]==1):
+        N_klast=24
+    elif  (pl_sphere_cyl[0]==4)&(pl_sphere_cyl[1]==1):
+        N_klast=16
+    elif  (pl_sphere_cyl[0]==4)&(pl_sphere_cyl[1]==2):
+        N_klast = 16
+    elif  (pl_sphere_cyl[0]==5)&(pl_sphere_cyl[1]==1):
+        N_klast=4
+
+    return N_klast
+
 def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,title):
     # https://pydoc.net/trimesh/2.22.26/trimesh.visual/
     #https://pypi.org/project/trimesh/
@@ -130,6 +161,22 @@ def plot_stl_vertices_color(struct_seg,num_segments,color_segmetns,surface_seg,v
             vtkmeshes.addScalarBar(title="Cmin")
             vtkmeshes1.addScalarBar(title="Cmax")
             show([vtkmeshes, vtkmeshes1], N=2, bg='w', axes=1)
+
+def plot_stl_vertices_klast(struct_seg,num_segments,color_segmetns,surface_seg,vertices,y_kmeans,title):
+    """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
+    for j in range(struct_seg.shape[0]):
+        for i in range(num_segments.shape[0]):
+            faces = copy.deepcopy(surface_seg[j][i][0])
+            mesh = trimesh.Trimesh(vertices=vertices,
+                                   faces=faces,
+                                   process=False)
+
+            vtkmeshes = trimesh2vtk(mesh)
+
+            vtkmeshes.pointColors(y_kmeans, cmap='jet')
+
+            vtkmeshes.addScalarBar(title="Cmin-Cmax_k_means")
+            show(vtkmeshes)
 
 def patchnormals_double(Fa,Fb,Fc,Vx,Vy,Vz):
     # Функция вычисления составляющих нормалей в вершинах stl
