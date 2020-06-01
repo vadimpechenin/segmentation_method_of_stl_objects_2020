@@ -30,7 +30,12 @@ mesh = stl_data.import_data()
 # 2 Этап. Вычисления тензора кривизн (главных кривизн)
 mesh=cct.calculation_curvature_tensor(mesh,ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file)
 # 3 Этап. Кластеризация данных по величинам главных кривизн. Сохранение структуры данных
-mesh=kct.klastering_vetices_of_mesh_by_curvature_tensor(mesh,ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file)
+idx_K, centers, massiv_face_klast,\
+curvature_face_klast, curvature_mean =kct.klastering_vetices_of_mesh_by_curvature_tensor(mesh,ex_m_var.pl_zagr,
+                                                                                         ex_m_var.pl,
+                                                                                         ex_m_var.pl_sphere_cyl,
+                                                                                         ex_m_var.path_file,
+                                                                                         ex_m_var.curvature_tolerance)
 
 
 

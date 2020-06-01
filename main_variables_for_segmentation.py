@@ -16,4 +16,5 @@ class Main_variables():
         # Blade_turbine_ideal, Лопатка_турбины_август_1_обр,40.412.007_идеал, 40.412.007_упрощенная_1
         # 5 - 3 сферы, теоретический пример. Three_spheres_radius64148
         self.pl_klast = 1  # какой алгоритм кластеризации использовать, k-mean или DBSCAN
+        self.curvature_tolerance = 0.6  # допуск на кривизну при сегментации
         self.path_file = 'D:\\PYTHON\\Programms\\Segmentation_ex_2\\Segmentation_stl_py_2020\\results\\'
