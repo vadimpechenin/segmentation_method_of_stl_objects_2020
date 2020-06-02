@@ -21,7 +21,11 @@ import supporting_functions_of_segmentation as sff
 from import_stl_data import Import_stl_data
 # Класс вычисления главных кривизн
 import сalculation_of_the_curvature_tensor as cct
+# Функция кластеризации вершин по кривизне
 import klastering_mesh_by_curvature_tensor as kct
+# Класс предварительной сегментации фасет
+from presegmentationfaces import Pre_segmentation_faces
+
 ex_m_var=Main_variables()
 
 stl_data=Import_stl_data(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file)
@@ -36,6 +40,11 @@ curvature_face_klast, curvature_mean =kct.klastering_vetices_of_mesh_by_curvatur
                                                                                          ex_m_var.pl_sphere_cyl,
                                                                                          ex_m_var.path_file,
                                                                                          ex_m_var.curvature_tolerance)
+# 4 Этап. Предварительная сегментация фасет.
+stl_pre_segment=Pre_segmentation_faces(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file,mesh)
 
+
+surface_seg,surfaceNormal_seg,surfaceCurve_seg,area_segments,\
+num_segments,curve_of_segments,color_segments,struct_seg = stl_pre_segment.func_calculate_pre_segmentation()
 
 

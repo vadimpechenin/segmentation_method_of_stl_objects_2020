@@ -72,6 +72,17 @@ def num_of_klasters(pl_sphere_cyl):
 
     return N_klast
 
+def tolerances_for_segmentation(pl_sphere_cyl,mesh):
+    """Функция для сохранения допусков параметров при сегментации"""
+    curveTolerance = np.std(mesh.Cmax) * 0.05
+    angleTolerance = 30
+    if (pl_sphere_cyl[0]==3)&(pl_sphere_cyl[1]==1):
+        curveTolerance = np.std(mesh.Cmin) * 0.05
+    elif (pl_sphere_cyl[0]==1)&(pl_sphere_cyl[1]==4):
+        angleTolerance = 10
+
+    return curveTolerance, angleTolerance
+
 def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,title):
     # https://pydoc.net/trimesh/2.22.26/trimesh.visual/
     #https://pypi.org/project/trimesh/

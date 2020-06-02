@@ -50,6 +50,6 @@ def calculation_curvature_tensor(mesh, pl_zagr, pl, pl_sphere_cyl, path_file):
             for c in range(nc):
                 surface_seg[r].append([])
                 surface_seg[r][c].append(mesh.faces)  # добавляем очередной элемент в строку
-        title = 'Загруженный для сегментации объект stl '
+        title = 'Кривизна объекта stl '
         sff.plot_stl_vertices_color(struct_seg, num_segments, color_segmetns, surface_seg, mesh.vertices,Cmin,Cmax, title)
     return mesh
