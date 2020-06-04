@@ -41,7 +41,8 @@ curvature_face_klast, curvature_mean =kct.klastering_vetices_of_mesh_by_curvatur
                                                                                          ex_m_var.path_file,
                                                                                          ex_m_var.curvature_tolerance)
 # 4 Этап. Предварительная сегментация фасет.
-stl_pre_segment=Pre_segmentation_faces(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file,mesh)
+stl_pre_segment=Pre_segmentation_faces(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file,mesh,
+                                       centers,massiv_face_klast,curvature_face_klast)
 
 
 surface_seg,surfaceNormal_seg,surfaceCurve_seg,area_segments,\

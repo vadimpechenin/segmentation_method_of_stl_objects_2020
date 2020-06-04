@@ -9,6 +9,7 @@ import random
 import trimesh
 import copy
 from vtkplotter import trimesh2vtk, show
+import math
 
 def name_of_results(pl_sphere_cyl):
     """Функция для сохранения имени результатов этапов метода"""
@@ -385,3 +386,123 @@ def patchcurvature_2014(mesh):
     Cmean = (min_curvature + max_curvature) / 2
     Cgaussian = min_curvature * max_curvature
     return Dir1, Dir2, min_curvature, max_curvature, Cmean, Cgaussian
+
+def ExtractSurface_by_curve_2020_2_curves(nodes, faces, normals, curves, targetPoint, targetVector,angleTolerance):
+    """Функция для выбора группы фасет, связанных с целевым по критериям главных кривизн"""
+    # 1. поиск узла, ближайшего к интересующей точке и вектора отсечения граней
+    nodeIndex =node_grain(nodes,targetPoint)
+
+
+    #Фильтр граней по вектору отсечения
+    angles = ((curves[:, 0] - np.full((curves.shape[0],1),targetVector[0])[:,0])** 2 +
+              (curves[:, 1] - np.full((curves.shape[0],1),targetVector[1])[:,0])** 2)**(0.5)
+    indexes = np.where(angles < angleTolerance)
+    faces = faces[indexes[0],:]
+    normals = normals[indexes[0],:]
+    curves = curves[indexes[0],:]
+
+    # грани, содержащие целевую точку
+    handledFacesIndexes = np.unique(np.hstack(((np.where(faces[:, 0] == nodeIndex)[0]),
+                                               np.where(faces[:, 1] == nodeIndex)[0],
+                                               np.where(faces[:, 2] == nodeIndex)[0])))
+    resultFaces = faces[handledFacesIndexes, :]
+    resultNormals = normals[handledFacesIndexes, :]
+    resultCurves = curves[handledFacesIndexes, :]
+
+    resultFaces, resultNormals, resultCurves, handledFacesIndexes = common_part_for_functionsExtractSurface(
+        resultFaces, resultNormals,
+        resultCurves, handledFacesIndexes,
+        nodes, faces, normals, curves
+    )
+
+    return resultFaces, resultNormals, resultCurves
+
+def ExtractSurface_by_curve_2020_2_curves_norm(nodes, faces, normals, curves, targetPoint,
+                                               targetVector,angleTolerance,targetVector2,angleTolerance2):
+    """Функция для выбора группы фасет, связанных с целевым по критериям главных кривизн"""
+    # 1. поиск узла, ближайшего к интересующей точке и вектора отсечения граней
+    nodeIndex =node_grain(nodes,targetPoint)
+
+
+    #Фильтр граней по вектору отсечения
+    # Углы нормалей
+    q=normals*np.full((normals.shape[0],3), targetVector2)
+    t2=np.sum((normals* np.full((normals.shape[0],3), targetVector2)),axis=1)
+    angles2 = np.arccos(np.sum((normals* np.full((normals.shape[0],3), targetVector2)),axis=1))/math.pi*180
+    indexes2 = np.where(angles2<angleTolerance2)
+    angles = ((curves[:, 0] - np.full((curves.shape[0],1),targetVector[0])[:,0])** 2 +
+              (curves[:, 1] - np.full((curves.shape[0],1),targetVector[1])[:,0])** 2)**(0.5)
+    indexes1 = np.where(angles < angleTolerance)
+    indexes = np.intersect1d(indexes1, indexes2)
+    faces = faces[indexes,:]
+    normals = normals[indexes,:]
+    curves = curves[indexes,:]
+    # грани, содержащие целевую точку
+    handledFacesIndexes = np.unique(np.hstack(((np.where(faces[:, 0] == nodeIndex)[0]),
+                                               np.where(faces[:, 1] == nodeIndex)[0],
+                                               np.where(faces[:, 2] == nodeIndex)[0])))
+    resultFaces = faces[handledFacesIndexes, :]
+    resultNormals = normals[handledFacesIndexes, :]
+    resultCurves = curves[handledFacesIndexes, :]
+
+    resultFaces, resultNormals, resultCurves, handledFacesIndexes = common_part_for_functionsExtractSurface(
+                                                                        resultFaces,resultNormals,
+                                                                        resultCurves,handledFacesIndexes,
+                                                                        nodes,faces,normals,curves
+                                                                    )
+
+    return resultFaces, resultNormals, resultCurves
+
+
+def node_grain(nodes,targetPoint):
+    d = nodes - np.full((nodes.shape[0], 3), targetPoint)
+    d = np.array([(np.sum((d * d) ** 2, axis=1)) ** 0.5]).T
+    # Stacking the two arrays horizontally
+    k = np.array([np.arange(0, d.shape[0], 1)]).T
+    d = np.hstack((d, k))
+    d = d[d[:, 0].argsort()]
+    nodeIndex = d[0, 1].astype('int')
+    return nodeIndex
+
+def common_part_for_functionsExtractSurface(resultFaces,resultNormals,resultCurves,handledFacesIndexes,
+                                            nodes,faces,normals,curves):
+
+    # построение связей узлов с гранями. Первый столбец номер узла, второй массив с номерами граней
+    links = np.vstack((np.hstack((np.array([faces[:, 0]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T)),
+                       np.hstack((np.array([faces[:, 1]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T)),
+                       np.hstack((np.array([faces[:, 2]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T))))
+    links = links[links[:, 0].argsort()]
+
+    links = np.vstack(([-1, - 1], links, [-1, - 1]))
+    r = links[1:, 0]
+    limits = np.where(links[1:, 0] - links[0: -1, 0] != 0)[0]
+    nodesFaces = []
+    for r in range(nodes.shape[0]):
+        nodesFaces.append([])
+        for c in range(2):
+            nodesFaces[r].append([])
+            if (c == 0):
+                nodesFaces[r][c].append(r)
+
+    for limitIndex in range(1, len(limits)):
+        nodeIndex = links[limits[limitIndex], 1]
+        left = limits[limitIndex - 1] + 1
+        right = limits[limitIndex]
+        facesIndexes = (links[left:right, 1]).T
+        nodesFaces[nodeIndex][1] = facesIndexes
+    while 1:
+        nodeIndexes = faces[handledFacesIndexes, :]
+        nodeIndexes = np.unique(nodeIndexes[:])
+        intermediate_array_of_index = np.array([])
+        for j in range(len(nodeIndexes)):
+            intermediate_array_of_index = np.hstack((intermediate_array_of_index, nodesFaces[j][1])).astype('int')
+
+        checkedFaceIndexes = np.setdiff1d(np.unique(intermediate_array_of_index), handledFacesIndexes)
+        if len(checkedFaceIndexes) == 0:
+            break
+
+        resultFaces = np.vstack((resultFaces, faces[checkedFaceIndexes, :]))
+        resultNormals = np.vstack((resultNormals, normals[checkedFaceIndexes, :]))
+        resultCurves = np.vstack((resultCurves, curves[checkedFaceIndexes, :]))
+        handledFacesIndexes = np.union1d(handledFacesIndexes, checkedFaceIndexes)
+        return resultFaces, resultNormals, resultCurves,handledFacesIndexes
