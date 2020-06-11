@@ -18,7 +18,7 @@ class Pre_segmentation_faces():
         self.massiv_face_klast = massiv_face_klast
         self.curvature_face_klast = curvature_face_klast
     def func_calculate_pre_segmentation(self):
-
+        # Функция предварительной сегментации slt и визуализации решения
         name_safe = sff.name_of_results(self.pl_sphere_cyl) + '_stage_3'
         save_dict={} #словарь для сохранения списков с вложенными массивами
         if self.pl_zagr[3] == 1:
@@ -159,5 +159,11 @@ class Pre_segmentation_faces():
             sff.plot_stl_faces_segmentation(struct_seg,num_segments,color_segments,surface_seg,
                                         self.mesh.vertices, title)
 
-        return surface_seg,surfaceNormal_seg,surfaceCurve_seg,area_segments,\
-               num_segments,curve_of_segments,color_segments,struct_seg
+        self.mesh.surface_seg=surface_seg
+        self.mesh.surfaceNormal_seg = surfaceNormal_seg
+        self.mesh.surfaceCurve_seg = surfaceCurve_seg
+        self.mesh.area_segments = area_segments
+        self.mesh.num_segments = num_segments
+        self.mesh.curve_of_segments = curve_of_segments
+        self.mesh.color_segments = color_segments
+        self.mesh.struct_seg = struct_seg

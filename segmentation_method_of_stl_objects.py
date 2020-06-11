@@ -25,6 +25,8 @@ import сalculation_of_the_curvature_tensor as cct
 import klastering_mesh_by_curvature_tensor as kct
 # Класс предварительной сегментации фасет
 from presegmentationfaces import Pre_segmentation_faces
+# Класс окончательной сегментации фасет
+from finalsegmentationfaces import Final_segmentation_faces
 
 ex_m_var=Main_variables()
 
@@ -41,14 +43,16 @@ curvature_face_klast, curvature_mean =kct.klastering_vetices_of_mesh_by_curvatur
                                                                                          ex_m_var.path_file,
                                                                                          ex_m_var.curvature_tolerance)
 # 4 Этап. Предварительная сегментация фасет.
+# Инициализация объекта
 stl_pre_segment=Pre_segmentation_faces(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file,mesh,
                                        centers,massiv_face_klast,curvature_face_klast)
-
-
-surface_seg,surfaceNormal_seg,surfaceCurve_seg,area_segments,\
-num_segments,curve_of_segments,color_segments,struct_seg = stl_pre_segment.func_calculate_pre_segmentation()
+#Предварительная сегментация
+stl_pre_segment.func_calculate_pre_segmentation()
 
 # 5 Этап. Окончательная сегментация фасет
-
+# Инициализация объекта
+stl_final_segment=Final_segmentation_faces(stl_pre_segment,mesh)
+#Предварительная сегментация и визуализация
+stl_final_segment.func_calculate_final_segmentation()
 
 
