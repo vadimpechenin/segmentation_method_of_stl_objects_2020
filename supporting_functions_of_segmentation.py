@@ -1,14 +1,18 @@
 """ Модуль вспомогательных функций для segmentation_method_of_stl_objects"""
 from mpl_toolkits import mplot3d
-import matplotlib.colors as colors
+import matplotlib.colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import pyplot
+import matplotlib.cm as cm
+from colorspacious import cspace_converter
+from collections import OrderedDict
 import numpy as np
 import random
 #https://pypi.org/project/trimesh/
 #https://trimsh.org/trimesh.visual.color.html
 import trimesh
 import copy
-from vtkplotter import trimesh2vtk, show
+from vtkplotter import trimesh2vtk, show, Plotter
 import math
 
 def name_of_results(pl_sphere_cyl):
@@ -39,7 +43,8 @@ def name_of_results(pl_sphere_cyl):
         name_file='Model_Sector_3_blades'
     elif  (pl_sphere_cyl[0]==5)&(pl_sphere_cyl[1]==1):
         name_file='Three_spheres_radius64148'
-
+    elif  (pl_sphere_cyl[0]==6)&(pl_sphere_cyl[1]==1):
+        name_file='Sphere_plane'
     return name_file
 
 def num_of_klasters(pl_sphere_cyl):
@@ -70,7 +75,8 @@ def num_of_klasters(pl_sphere_cyl):
         N_klast = 16
     elif  (pl_sphere_cyl[0]==5)&(pl_sphere_cyl[1]==1):
         N_klast=4
-
+    elif  (pl_sphere_cyl[0]==6)&(pl_sphere_cyl[1]==1):
+        N_klast=2
     return N_klast
 
 def tolerances_for_segmentation(pl_sphere_cyl,mesh):
@@ -140,7 +146,7 @@ def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,t
         ax.auto_scale_xyz(1, 1, 1)
         pyplot.show()
 
-def plot_stl_vertices_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,Cmin,Cmax,title):
+def plot_stl_vertices_klast(struct_seg,num_segments,color_segmetns,surface_seg,vertices,Cmin,Cmax,title):
     """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
     for j in range(struct_seg.shape[0]):
         for i in range(num_segments.shape[0]):
@@ -173,6 +179,69 @@ def plot_stl_vertices_color(struct_seg,num_segments,color_segmetns,surface_seg,v
             vtkmeshes.addScalarBar(title="Cmin")
             vtkmeshes1.addScalarBar(title="Cmax")
             show([vtkmeshes, vtkmeshes1], N=2, bg='w', axes=1)
+
+def plot_stl_faces_color_curvature(struct_seg,num_segments,surface_seg,
+                                   vertices,curvature_face_klast, title):
+    """Функция для прорисовки фасет stl объекта, основанных на цвете по кривизне для каждой фасеты"""
+    for j in range(struct_seg.shape[0]):
+        for i in range(num_segments.shape[0]):
+            faces = copy.deepcopy(surface_seg[j][i][0])
+            meshes=[trimesh.Trimesh(vertices=vertices,
+                                   faces=faces,
+                                   process=False) for i in range(2)]
+
+            Cmin1, Cmax1 = copy.deepcopy(curvature_face_klast[:,0]), copy.deepcopy(curvature_face_klast[:,1])
+            #np.max(Cmin1)-np.min(Cmin1)
+            meshes[0].visual.face_colors = trimesh.visual.interpolate(curvature_face_klast[:,0], color_map='jet')
+            meshes[1].visual.face_colors = trimesh.visual.interpolate(curvature_face_klast[:,1], color_map='jet')
+            # create a scene containing the mesh and colorbar
+           # pyplot.pcolor(Cmin1)
+            #pyplot.colorbar()
+            #scene = trimesh.Scene([mesh])
+            # setup the normalization and the colormap
+            normalize = mcolors.Normalize(vmin=np.min(Cmin1), vmax=np.max(Cmin1))
+            colormap = cm.jet
+            scalarmappaple = cm.ScalarMappable(norm=normalize, cmap=colormap)
+            scalarmappaple.set_array(Cmin1)
+            pyplot.colorbar(scalarmappaple)
+            vtkmeshes = [trimesh2vtk(m) for m in meshes]
+            vtkmeshes[0].addScalarBar(title="Cmin")
+            vtkmeshes[1].addScalarBar(title="Cmax")
+            #vp = Plotter(title="Cmin", interactive=0, axes=3)
+            #vp +=vtkmeshes
+            #vp.show(resetcam=0)
+            #vp.show()
+            show([vtkmeshes[0], vtkmeshes[1]], interactive=0, N=2, bg='w', axes=1) #bg2='wheat',
+
+            # show the scene wusing
+            #scene.show()
+            #mesh.show()
+
+def plot_stl_faces_segmentation(struct_seg,num_segments,color_segments,surface_seg,
+                                   vertices, title):
+    """Функция для прорисовки фасет stl объекта, основанных на цвете по кривизне для каждой фасеты"""
+    vp = Plotter(title=title, interactive=0, axes=3)
+    # работа с палитрой
+    cmaps = OrderedDict()
+    cmap = 'jet'
+    t=struct_seg[0]
+    x = np.linspace(0.0, 1.0, struct_seg[0])
+    rgb = cm.get_cmap(cmap)(x)[np.newaxis, :, :3]
+    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb).reshape(struct_seg[0],3)
+    if (math.fabs(np.min(lab))+np.max(lab)<255) and (np.min(lab)<0):
+        lab+=math.fabs(np.min(lab))
+
+    for num in range(0,struct_seg[0]):
+        # Get RGB values for colormap and convert the colormap in
+        # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
+
+        mesh = trimesh.Trimesh(vertices=vertices,
+                               faces=surface_seg[num],
+                               process=False)
+        mesh.visual.face_colors = lab[num,:]
+        vp += mesh
+    # vp.show(resetcam=0)
+    vp.show()
 
 def plot_stl_vertices_klast(struct_seg,num_segments,color_segmetns,surface_seg,vertices,y_kmeans,title):
     """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
@@ -387,7 +456,8 @@ def patchcurvature_2014(mesh):
     Cgaussian = min_curvature * max_curvature
     return Dir1, Dir2, min_curvature, max_curvature, Cmean, Cgaussian
 
-def ExtractSurface_by_curve_2020_2_curves(nodes, faces, normals, curves, targetPoint, targetVector,angleTolerance):
+def ExtractSurface_by_curve_2020_2_curves(nodes, faces, normals, curves, targetPoint,
+                                          targetVector,angleTolerance,pl_extract):
     """Функция для выбора группы фасет, связанных с целевым по критериям главных кривизн"""
     # 1. поиск узла, ближайшего к интересующей точке и вектора отсечения граней
     nodeIndex =node_grain(nodes,targetPoint)
@@ -400,7 +470,14 @@ def ExtractSurface_by_curve_2020_2_curves(nodes, faces, normals, curves, targetP
     faces = faces[indexes[0],:]
     normals = normals[indexes[0],:]
     curves = curves[indexes[0],:]
-
+    if (1==0):
+        gridsize = (1, 2)
+        fig = pyplot.figure(figsize=(12, 8))
+        ax2 = pyplot.subplot2grid(gridsize, (0, 0))
+        ax3 = pyplot.subplot2grid(gridsize, (0, 1))
+        ax2.plot(range(curves.shape[0]), curves[:, 0])
+        ax3.plot(range(curves.shape[0]), curves[:, 1])
+        pyplot.show()
     # грани, содержащие целевую точку
     handledFacesIndexes = np.unique(np.hstack(((np.where(faces[:, 0] == nodeIndex)[0]),
                                                np.where(faces[:, 1] == nodeIndex)[0],
@@ -410,15 +487,15 @@ def ExtractSurface_by_curve_2020_2_curves(nodes, faces, normals, curves, targetP
     resultCurves = curves[handledFacesIndexes, :]
 
     resultFaces, resultNormals, resultCurves, handledFacesIndexes = common_part_for_functionsExtractSurface(
-        resultFaces, resultNormals,
-        resultCurves, handledFacesIndexes,
-        nodes, faces, normals, curves
-    )
+                                                                    resultFaces, resultNormals,
+                                                                    resultCurves, handledFacesIndexes,
+                                                                    nodes, faces, normals, curves,pl_extract
+                                                                    )
 
     return resultFaces, resultNormals, resultCurves
 
 def ExtractSurface_by_curve_2020_2_curves_norm(nodes, faces, normals, curves, targetPoint,
-                                               targetVector,angleTolerance,targetVector2,angleTolerance2):
+                                               targetVector,angleTolerance,targetVector2,angleTolerance2,pl_extract):
     """Функция для выбора группы фасет, связанных с целевым по критериям главных кривизн"""
     # 1. поиск узла, ближайшего к интересующей точке и вектора отсечения граней
     nodeIndex =node_grain(nodes,targetPoint)
@@ -448,7 +525,7 @@ def ExtractSurface_by_curve_2020_2_curves_norm(nodes, faces, normals, curves, ta
     resultFaces, resultNormals, resultCurves, handledFacesIndexes = common_part_for_functionsExtractSurface(
                                                                         resultFaces,resultNormals,
                                                                         resultCurves,handledFacesIndexes,
-                                                                        nodes,faces,normals,curves
+                                                                        nodes,faces,normals,curves,pl_extract
                                                                     )
 
     return resultFaces, resultNormals, resultCurves
@@ -465,17 +542,18 @@ def node_grain(nodes,targetPoint):
     return nodeIndex
 
 def common_part_for_functionsExtractSurface(resultFaces,resultNormals,resultCurves,handledFacesIndexes,
-                                            nodes,faces,normals,curves):
+                                            nodes,faces,normals,curves,pl_extract):
 
     # построение связей узлов с гранями. Первый столбец номер узла, второй массив с номерами граней
+    g=(np.array([faces[:, 0]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T)
+    h=np.hstack((np.array([faces[:, 0]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T))
     links = np.vstack((np.hstack((np.array([faces[:, 0]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T)),
                        np.hstack((np.array([faces[:, 1]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T)),
                        np.hstack((np.array([faces[:, 2]]).T, np.array([np.arange(0, faces.shape[0], 1)]).T))))
     links = links[links[:, 0].argsort()]
 
     links = np.vstack(([-1, - 1], links, [-1, - 1]))
-    r = links[1:, 0]
-    limits = np.where(links[1:, 0] - links[0: -1, 0] != 0)[0]
+    limits = np.where((links[1:, 0] - links[0: -1, 0]) != 0)[0]
     nodesFaces = []
     for r in range(nodes.shape[0]):
         nodesFaces.append([])
@@ -485,17 +563,21 @@ def common_part_for_functionsExtractSurface(resultFaces,resultNormals,resultCurv
                 nodesFaces[r][c].append(r)
 
     for limitIndex in range(1, len(limits)):
-        nodeIndex = links[limits[limitIndex], 1]
+        nodeIndex = links[limits[limitIndex], 0]
         left = limits[limitIndex - 1] + 1
         right = limits[limitIndex]
-        facesIndexes = (links[left:right, 1]).T
+        facesIndexes = np.sort(links[left:right+1, 1])
         nodesFaces[nodeIndex][1] = facesIndexes
+
+    if pl_extract == 1:
+        # прорисовка шагов
+        vp = Plotter(title="Cmin", interactive=0, axes=3)
     while 1:
         nodeIndexes = faces[handledFacesIndexes, :]
         nodeIndexes = np.unique(nodeIndexes[:])
         intermediate_array_of_index = np.array([])
         for j in range(len(nodeIndexes)):
-            intermediate_array_of_index = np.hstack((intermediate_array_of_index, nodesFaces[j][1])).astype('int')
+            intermediate_array_of_index = np.hstack((intermediate_array_of_index, nodesFaces[nodeIndexes[j]][1])).astype('int')
 
         checkedFaceIndexes = np.setdiff1d(np.unique(intermediate_array_of_index), handledFacesIndexes)
         if len(checkedFaceIndexes) == 0:
@@ -505,4 +587,41 @@ def common_part_for_functionsExtractSurface(resultFaces,resultNormals,resultCurv
         resultNormals = np.vstack((resultNormals, normals[checkedFaceIndexes, :]))
         resultCurves = np.vstack((resultCurves, curves[checkedFaceIndexes, :]))
         handledFacesIndexes = np.union1d(handledFacesIndexes, checkedFaceIndexes)
-        return resultFaces, resultNormals, resultCurves,handledFacesIndexes
+        if pl_extract == 1:
+            mesh = trimesh.Trimesh(vertices=nodes,
+                                   faces=faces[checkedFaceIndexes, :],
+                                   process=False)
+            mesh.visual.face_colors = trimesh.visual.random_color()
+            vp +=mesh
+            #vp.show(resetcam=0)
+            vp.show()
+        g=0
+    return resultFaces, resultNormals, resultCurves,handledFacesIndexes
+
+
+
+def facet_exception(massiv_face_klast_all, faces_all, normals_all, curvature_face_klast_all, surface):
+    """Фукция исключения сегментированных значений из массивов
+    """
+    indices1, indices2, indices3 = np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 0], surface[:, 0])], \
+                                   np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 1], surface[:, 1])], \
+                                   np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 2], surface[:, 2])]
+    indices_ = np.intersect1d(indices1, indices2)
+    indices = np.intersect1d(indices_, indices3)
+    faces_all = np.delete(faces_all, indices, axis=0)
+    normals_all=np.delete(normals_all, indices, axis=0)
+    massiv_face_klast_all = np.delete(massiv_face_klast_all, indices, axis=0)
+    curvature_face_klast_all = np.delete(curvature_face_klast_all, indices, axis=0)
+    return massiv_face_klast_all, faces_all, normals_all, curvature_face_klast_all
+
+def stl_Area_segment(p,t):
+    """Функция для расчета площади сегмента stl-поверхности
+    """
+    d13 = np.array([(p[0, t[1, :]] - p[0, t[2, :]]), (p[1, t[1, :]] - p[1, t[2, :]]), (p[2, t[1, :]] - p[2, t[2, :]])])
+    d12 = np.array([(p[0, t[0, :]] - p[0, t[1, :]]), (p[1, t[0, :]] - p[1, t[1, :]]), (p[2, t[0, :]] - p[2, t[1, :]])])
+    cr = np.cross(d13.T, d12.T).T
+    area = 0.5 * (cr[0, :] ** 2 + cr[1, :] ** 2 + cr[2, :] ** 2) ** (0.5)
+    return np.sum(area)
+
+
+

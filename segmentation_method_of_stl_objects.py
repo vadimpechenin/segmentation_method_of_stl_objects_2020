@@ -48,4 +48,7 @@ stl_pre_segment=Pre_segmentation_faces(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_
 surface_seg,surfaceNormal_seg,surfaceCurve_seg,area_segments,\
 num_segments,curve_of_segments,color_segments,struct_seg = stl_pre_segment.func_calculate_pre_segmentation()
 
+# 5 Этап. Окончательная сегментация фасет
+
+
 

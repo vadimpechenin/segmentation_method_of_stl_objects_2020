@@ -221,6 +221,8 @@ def klastering_vetices_of_mesh_by_curvature_tensor(mesh,pl_zagr,pl,pl_sphere_cyl
                 surface_seg[r].append([])
                 surface_seg[r][c].append(mesh.faces)  # добавляем очередной элемент в строку
         title = 'Результат кластеризации вершин stl по кривизне'
+        #sff.plot_stl_faces_color_curvature(struct_seg, num_segments, surface_seg, mesh.vertices,
+        #                            curvature_face_klast, title)
         sff.plot_stl_vertices_klast(struct_seg, num_segments, color_segmetns, surface_seg, mesh.vertices, idx_K,
                                     title)
 

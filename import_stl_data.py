@@ -20,16 +20,30 @@ class Import_stl_data():
     def import_data(self):
         name_safe=sff.name_of_results(self.pl_sphere_cyl)
         if (self.pl_zagr[0]==1):
-            file_path_string = tkinter.filedialog.askopenfilename()
-            mesh_load = trimesh.load(file_path_string)
-            num_vertices,num_faces =mesh_load.vertices.shape[0],mesh_load.faces.shape[0]
-            mesh = Mesh_class(num_vertices, num_faces)
-            vertices = copy.deepcopy(mesh_load.vertices)
-            faces =  copy.deepcopy(mesh_load.faces)
-            normals = copy.deepcopy(mesh_load.face_normals)
-            mesh.vertices =  copy.deepcopy(mesh_load.vertices)
-            mesh.faces = copy.deepcopy(mesh_load.faces)
-            mesh.normals = copy.deepcopy(mesh_load.face_normals)
+            if 1 == 0:
+                file_path_string = tkinter.filedialog.askopenfilename()
+                mesh_load = trimesh.load(file_path_string)
+                num_vertices,num_faces =mesh_load.vertices.shape[0],mesh_load.faces.shape[0]
+                vertices = copy.deepcopy(mesh_load.vertices)
+                faces = copy.deepcopy(mesh_load.faces)
+                normals = copy.deepcopy(mesh_load.face_normals)
+                mesh = Mesh_class(num_vertices, num_faces)
+                mesh.vertices =  copy.deepcopy(mesh_load.vertices)
+                mesh.faces = copy.deepcopy(mesh_load.faces)
+                mesh.normals = copy.deepcopy(mesh_load.face_normals)
+            else:
+                mesh_load_mat = scipy.io.loadmat(self.path_file + name_safe + '_matlab.mat')
+                vertices = np.array(mesh_load_mat['v'])
+                faces = np.array(mesh_load_mat['f'])
+                for j in range(faces.shape[0]):
+                    for i in range(faces.shape[1]):
+                        faces[j, i] = faces[j, i] - 1
+                normals = np.array(mesh_load_mat['n'])
+                num_vertices, num_faces = vertices.shape[0], faces.shape[0]
+                mesh = Mesh_class(num_vertices, num_faces)
+                mesh.vertices = copy.deepcopy(vertices)
+                mesh.faces = copy.deepcopy(faces)
+                mesh.normals = copy.deepcopy(normals)
             scipy.io.savemat(self.path_file + name_safe+'.mat', {'num_vertices': num_vertices,
                                                                  'num_faces': num_faces,
                                                                  'vertices': vertices,
