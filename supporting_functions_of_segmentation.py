@@ -147,7 +147,7 @@ def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,t
         ax.auto_scale_xyz(1, 1, 1)
         pyplot.show()
 
-def plot_stl_vertices_klast(struct_seg,num_segments,color_segmetns,surface_seg,vertices,Cmin,Cmax,title):
+def plot_stl_vertices_curvature(struct_seg,num_segments,color_segmetns,surface_seg,vertices,Cmin,Cmax,title):
     """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
     for j in range(struct_seg.shape[0]):
         for i in range(num_segments.shape[0]):
@@ -218,32 +218,42 @@ def plot_stl_faces_color_curvature(struct_seg,num_segments,surface_seg,
             #scene.show()
             #mesh.show()
 
-def plot_stl_faces_segmentation(struct_seg,num_segments,color_segments,surface_seg,
-                                   vertices, title):
-    """Функция для прорисовки фасет stl объекта, основанных на цвете по кривизне для каждой фасеты"""
+def plot_stl_faces_segmentation(struct_seg1,num_segments1,surface_seg1,
+                                   vertices, title, noize=None):
+    """Функция для прорисовки фасет stl объекта, основанных на цвете по кривизне для каждой фасеты.
+       Исключается шум, заданный пользователем
+       """
+    struct_seg = np.array([])
+    num_segments = np.array([])
+    surface_seg = []
+    if noize is None:
+        # Если noize не задано - не надо улалять шум, оставляем структуру как есть
+        struct_seg = copy.deepcopy(struct_seg1).astype('int')
+        num_segments = copy.deepcopy(num_segments1)
+        surface_seg = copy.deepcopy(surface_seg1)
+    else:
+        idx = np.where(num_segments1 > noize)
+        if len(idx[0]) > 0:
+            for j in range(len(idx[0])):
+                surface_seg.append([])
+                t = surface_seg1[idx[0][j]]
+                surface_seg[j] = copy.deepcopy(t)
+                num_segments = np.append(num_segments, num_segments1[idx[0][j]])
+            struct_seg = np.append(struct_seg, len(idx[0])).astype('int')
+        else:
+            print('Все участки меньше допуска, рисуем все')
+            struct_seg = copy.deepcopy(struct_seg1).astype('int')
+            num_segments = copy.deepcopy(num_segments1[0, :])
+            surface_seg = copy.deepcopy(surface_seg1)
     vp = Plotter(title=title, interactive=0, axes=0)
     # работа с палитрой
-    cmaps = OrderedDict()
-    cmap = 'jet'
-    t=struct_seg[0]
-    x = np.linspace(0.0, 1.0, struct_seg[0])
-    if (1==0):
-        rgb = cm.get_cmap(cmap)(x)[np.newaxis, :, :3]
-        lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb).reshape(struct_seg[0],3)
-        if (math.fabs(np.min(lab))+np.max(lab)<255) and (np.min(lab)<0):
-            lab+=math.fabs(np.min(lab))
-    else:
-        lab = parula(struct_seg[0])
-    for num in range(0,struct_seg[0]):
-        # Get RGB values for colormap and convert the colormap in
-        # CAM02-UCS colorspace.  lab[0, :, 0] is the lightness.
-
+    lab = parula(struct_seg[0])
+    for num in range(0, struct_seg[0]):
         mesh = trimesh.Trimesh(vertices=vertices,
                                faces=surface_seg[num],
                                process=False)
-        mesh.visual.face_colors = lab[num,:]
+        mesh.visual.face_colors = lab[num, :]
         vp += mesh
-    # vp.show(resetcam=0)
     vp.show()
 
 def plot_stl_vertices_klast(struct_seg,num_segments,color_segmetns,surface_seg,vertices,y_kmeans,title):
@@ -601,8 +611,23 @@ def common_part_for_functionsExtractSurface(resultFaces,resultNormals,resultCurv
         g=0
     return resultFaces, resultNormals, resultCurves,handledFacesIndexes
 
-
-
+def perimeter_and_diametr_calculation(vertices, faces):
+    """Функция для расчета периметра сетки
+    """
+    sum1, sum2, sum3 = np.sum(((vertices[faces[:, 0], 0] - vertices[faces[:, 1], 0]) ** 2 +
+                          (vertices[faces[:, 0], 1] - vertices[faces[:, 1], 1]) ** 2 +
+                          (vertices[faces[:, 0], 2] - vertices[faces[:, 1], 2]) ** 2) ** 0.5),\
+                    np.sum(((vertices[faces[:, 1], 0] - vertices[faces[:, 2], 0]) ** 2 +
+                           (vertices[faces[:, 1], 1] - vertices[faces[:, 2], 1]) ** 2 +
+                           (vertices[faces[:, 1], 2] - vertices[faces[:, 2], 2]) ** 2) ** 0.5),\
+                    np.sum(((vertices[faces[:, 2], 0] - vertices[faces[:, 0], 0]) ** 2 +
+                           (vertices[faces[:, 2], 1] - vertices[faces[:, 0], 1]) ** 2 +
+                           (vertices[faces[:, 2], 2] - vertices[faces[:, 0], 2]) ** 2) ** 0.5)
+    perimeter = np.sum(np.array([sum1, sum2, sum3]))
+    deameter = np.max(np.array([(np.max(vertices[:, 0]) - np.min(vertices[:, 0])),
+                                (np.max(vertices[:, 1]) - np.min(vertices[:, 1])),
+                                (np.max(vertices[:, 2]) - np.min(vertices[:, 2]))]))
+    return perimeter, deameter
 def facet_exception(massiv_face_klast_all, faces_all, normals_all, curvature_face_klast_all, surface):
     """Фукция исключения сегментированных значений из массивов
     """
@@ -616,6 +641,69 @@ def facet_exception(massiv_face_klast_all, faces_all, normals_all, curvature_fac
     massiv_face_klast_all = np.delete(massiv_face_klast_all, indices, axis=0)
     curvature_face_klast_all = np.delete(curvature_face_klast_all, indices, axis=0)
     return massiv_face_klast_all, faces_all, normals_all, curvature_face_klast_all
+
+def facet_exception_lite(faces_all, surface):
+    """Фукция исключения значений фасет из общего массива фасет
+    """
+    indices1, indices2, indices3 = np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 0], surface[:, 0])], \
+                                   np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 1], surface[:, 1])], \
+                                   np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 2], surface[:, 2])]
+    indices_ = np.intersect1d(indices1, indices2)
+    indices = np.intersect1d(indices_, indices3)
+    faces_all = np.delete(faces_all, indices, axis=0)
+    return faces_all
+
+def facet_intersection(faces_all, surface):
+    """Фукция поиска общей матрицы фасет двух поверхностей
+    """
+    indices1, indices2, indices3 = np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 0], surface[:, 0])], \
+                                   np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 1], surface[:, 1])], \
+                                   np.arange(faces_all.shape[0])[np.in1d(faces_all[:, 2], surface[:, 2])]
+    indices_ = np.intersect1d(indices1, indices2)
+    indices = np.intersect1d(indices_, indices3)
+    return indices
+
+def boundary_intersection(faces_all, surface):
+    """Фукция поиска общей границы двух фасетных поверхностей
+    """
+    indices = np.intersect1d(np.vstack((faces_all[:,0], faces_all[:,1], faces_all[:,2])),
+                             np.vstack((surface[:,0], surface[:,1], surface[:,2])))
+    return indices
+
+def filling_in_common_vertices(surface_search_boundary, faces_all, boundary):
+    """Функция заполнения массива общими вершинами
+    """
+    for i in range(faces_all.shape[1]):
+        numbers, ai, ia=  np.intersect1d(faces_all[:, i], boundary, return_indices=True)
+        surface_search_boundary[ai,i] = faces_all[ai, i]
+    return surface_search_boundary
+
+def search_matrix_compilation(v1, surf_sear_bound):
+    """Составление матриц расстояний в массиве вершин
+    """
+    P_surface_search_boundary_matrix=np.zeros([surf_sear_bound.shape[0]*v1.shape[1],1])
+    for i in range(v1.shape[1]):
+        if i<2:
+            k = i+1
+        else:
+            k=0
+        P_surface_search_boundary_matrix[i*surf_sear_bound.shape[0]:(i+1)*surf_sear_bound.shape[0],0] = \
+                                                 ((v1[surf_sear_bound[:, i], 0]-v1[surf_sear_bound[:, k], 0])**2 +
+                                                 (v1[surf_sear_bound[:, i], 1]-v1[surf_sear_bound[:, k], 1])**2 +
+                                                 (v1[surf_sear_bound[:, i], 2]-v1[surf_sear_bound[:, k], 2])**2)**0.5
+    return P_surface_search_boundary_matrix
+
+def creating_an_array_of_borders(surface_search,F_massiv_boundary):
+    """Порядковые номера фасет границы
+    """
+    adfs, ai, ia = np.intersect1d(surface_search[:, 0], F_massiv_boundary, return_indices=True)
+    adfs1, ai1, ia1 = np.intersect1d(surface_search[:, 1], F_massiv_boundary, return_indices=True)
+    adfs2, ai2, ia2 = np.intersect1d(surface_search[:, 2], F_massiv_boundary, return_indices=True)
+    array_boundary=copy.deepcopy(ai)
+    array_boundary = np.append(array_boundary, ai1)
+    array_boundary = np.append(array_boundary, ai2)
+    array_boundary = np.unique(array_boundary)
+    return array_boundary
 
 def stl_Area_segment(p,t):
     """Функция для расчета площади сегмента stl-поверхности

@@ -1,5 +1,3 @@
-import numpy as np
-
 class Mesh_class():
     """Класс slt-объекта"""
     def __init__(self,num_vertices,num_faces):

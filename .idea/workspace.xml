@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8cbadb22-86c7-4c1f-87f8-3e17f03eb290" name="Default Changelist" comment="Visualization coloring mesh vertex">
-      <change afterPath="$PROJECT_DIR$/finalsegmentationfaces.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finalsegmentationfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/finalsegmentationfaces.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/import_stl_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/import_stl_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_variables_for_segmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_variables_for_segmentation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mesh_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/mesh_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/presegmentationfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/presegmentationfaces.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" beforeDir="false" afterPath="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/supporting_functions_of_segmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/supporting_functions_of_segmentation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/segmentation_method_of_stl_objects.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="53" column="42" selection-start-line="53" selection-start-column="42" selection-end-line="53" selection-end-column="42" />
+            <state relative-caret-position="271">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
               <folding>
                 <element signature="e#429#447#0" expanded="true" />
               </folding>
@@ -32,8 +35,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/finalsegmentationfaces.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="235">
+              <caret line="235" selection-start-line="235" selection-end-line="235" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
               </folding>
@@ -44,10 +47,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/presegmentationfaces.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="30" column="18" lean-forward="true" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+            <state relative-caret-position="260">
+              <caret line="140" column="61" lean-forward="true" selection-start-line="140" selection-start-column="11" selection-end-line="140" selection-end-column="61" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
+                <element signature="e#335#612#0" />
               </folding>
             </state>
           </provider>
@@ -56,8 +60,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="203">
+              <caret line="48" column="34" lean-forward="true" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
               <folding>
                 <element signature="e#98#148#0" expanded="true" />
               </folding>
@@ -66,19 +70,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mesh_class.py">
+        <entry file="file://$PROJECT_DIR$/supporting_functions_of_segmentation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="48">
+              <caret line="232" selection-start-line="232" selection-end-line="232" />
+              <folding>
+                <element signature="e#77#109#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main_variables_for_segmentation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="169">
+              <caret line="11" column="38" selection-start-line="11" selection-start-column="38" selection-end-line="11" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mesh_class.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="223" column="70" selection-start-line="223" selection-start-column="70" selection-end-line="223" selection-end-column="70" />
+            <state relative-caret-position="322">
+              <caret line="229" selection-start-line="229" selection-end-line="229" />
               <folding>
                 <element signature="e#63#113#0" expanded="true" />
               </folding>
@@ -89,31 +110,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/import_stl_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="24" column="58" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="58" />
+            <state relative-caret-position="169">
+              <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
               <folding>
                 <element signature="e#41#55#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_variables_for_segmentation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="38" selection-start-line="11" selection-start-column="38" selection-end-line="11" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/supporting_functions_of_segmentation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="223" column="51" selection-start-line="223" selection-start-column="51" selection-end-line="223" selection-end-column="51" />
-              <folding>
-                <element signature="e#77#109#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -136,6 +136,19 @@
       <find>floa</find>
       <find>plot_stl_vertices_color</find>
       <find>int</find>
+      <find>toleran</find>
+      <find>tolerances_for_segmentation</find>
+      <find>arg</find>
+      <find>max</find>
+      <find>vs</find>
+      <find>inters</find>
+      <find>facet_tin</find>
+      <find>inter</find>
+      <find>crea</find>
+      <find>vsta</find>
+      <find>filling</find>
+      <find>plot_stl_vertices_klast</find>
+      <find>num_segments</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -152,16 +165,16 @@
         <option value="$PROJECT_DIR$/The_main_variables_for_segmentation.py" />
         <option value="$PROJECT_DIR$/Supporting_Functions_of_segmentation.py" />
         <option value="$PROJECT_DIR$/Segmentation_method_of_stl_objects.py" />
-        <option value="$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py" />
         <option value="$PROJECT_DIR$/pre_segmentation faces.py" />
-        <option value="$PROJECT_DIR$/import_stl_data.py" />
-        <option value="$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py" />
-        <option value="$PROJECT_DIR$/mesh_class.py" />
-        <option value="$PROJECT_DIR$/presegmentationfaces.py" />
-        <option value="$PROJECT_DIR$/finalsegmentationfaces.py" />
-        <option value="$PROJECT_DIR$/main_variables_for_segmentation.py" />
         <option value="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" />
+        <option value="$PROJECT_DIR$/mesh_class.py" />
+        <option value="$PROJECT_DIR$/import_stl_data.py" />
+        <option value="$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py" />
+        <option value="$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py" />
+        <option value="$PROJECT_DIR$/presegmentationfaces.py" />
         <option value="$PROJECT_DIR$/supporting_functions_of_segmentation.py" />
+        <option value="$PROJECT_DIR$/main_variables_for_segmentation.py" />
+        <option value="$PROJECT_DIR$/finalsegmentationfaces.py" />
       </list>
     </option>
   </component>
@@ -176,7 +189,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -188,10 +200,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Delete_objects_of_array" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../find_and_intersect" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="RunDashboard">
@@ -266,19 +279,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.20337197" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.50790304" side_tool="true" visible="true" weight="0.48593074" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5105374" side_tool="true" visible="true" weight="0.48593074" />
       <window_info anchor="bottom" id="Python Console" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
       <window_info anchor="bottom" id="Version Control" order="5" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.49525815" weight="0.27272728" />
-      <window_info active="true" anchor="bottom" id="Debug" order="7" sideWeight="0.49209693" visible="true" weight="0.48593074" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.4947313" weight="0.27272728" />
+      <window_info active="true" anchor="bottom" id="Debug" order="7" sideWeight="0.48946258" visible="true" weight="0.48593074" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="10" />
@@ -298,8 +310,23 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/finalsegmentationfaces.py</url>
-          <line>19</line>
-          <option name="timeStamp" value="194" />
+          <line>129</line>
+          <option name="timeStamp" value="83" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/segmentation_method_of_stl_objects.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/supporting_functions_of_segmentation.py</url>
+          <line>186</line>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/presegmentationfaces.py</url>
+          <line>159</line>
+          <option name="timeStamp" value="117" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -395,86 +422,97 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py">
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/_methods.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="223" column="70" selection-start-line="223" selection-start-column="70" selection-end-line="223" selection-end-column="70" />
-          <folding>
-            <element signature="e#63#113#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mesh_class.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#98#148#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/presegmentationfaces.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="30" column="18" lean-forward="true" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="149">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/import_stl_data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="24" column="58" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="58" />
+        <state relative-caret-position="169">
+          <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
           <folding>
             <element signature="e#41#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="310" selection-start-line="310" selection-end-line="310" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="229" selection-start-line="229" selection-end-line="229" />
+          <folding>
+            <element signature="e#63#113#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/сalculation_of_the_curvature_tensor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="48" column="34" lean-forward="true" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
+          <folding>
+            <element signature="e#98#148#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mesh_class.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/supporting_functions_of_segmentation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="232" selection-start-line="232" selection-end-line="232" />
+          <folding>
+            <element signature="e#77#109#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main_variables_for_segmentation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="169">
           <caret line="11" column="38" selection-start-line="11" selection-start-column="38" selection-end-line="11" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/segmentation_method_of_stl_objects.py">
+    <entry file="file://$PROJECT_DIR$/presegmentationfaces.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="53" column="42" selection-start-line="53" selection-start-column="42" selection-end-line="53" selection-end-column="42" />
+        <state relative-caret-position="260">
+          <caret line="140" column="61" lean-forward="true" selection-start-line="140" selection-start-column="11" selection-end-line="140" selection-end-column="61" />
           <folding>
-            <element signature="e#429#447#0" expanded="true" />
+            <element signature="e#0#50#0" expanded="true" />
+            <element signature="e#335#612#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/finalsegmentationfaces.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="235">
+          <caret line="235" selection-start-line="235" selection-end-line="235" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/supporting_functions_of_segmentation.py">
+    <entry file="file://$PROJECT_DIR$/segmentation_method_of_stl_objects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="223" column="51" selection-start-line="223" selection-start-column="51" selection-end-line="223" selection-end-column="51" />
+        <state relative-caret-position="271">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
           <folding>
-            <element signature="e#77#109#0" expanded="true" />
+            <element signature="e#429#447#0" expanded="true" />
           </folding>
         </state>
       </provider>

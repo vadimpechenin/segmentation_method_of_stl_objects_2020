@@ -20,7 +20,7 @@ class Import_stl_data():
     def import_data(self):
         name_safe=sff.name_of_results(self.pl_sphere_cyl)
         if (self.pl_zagr[0]==1):
-            if 1 == 0:
+            if 1 == 1:
                 file_path_string = tkinter.filedialog.askopenfilename()
                 mesh_load = trimesh.load(file_path_string)
                 num_vertices,num_faces =mesh_load.vertices.shape[0],mesh_load.faces.shape[0]

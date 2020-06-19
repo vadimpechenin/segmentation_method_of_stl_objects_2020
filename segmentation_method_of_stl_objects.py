@@ -55,4 +55,12 @@ stl_final_segment=Final_segmentation_faces(stl_pre_segment,mesh)
 #Предварительная сегментация и визуализация
 stl_final_segment.func_calculate_final_segmentation()
 
+#Визуализация без "шума"
+if ex_m_var.pl[5] == 1:
+    title = 'Результат окончательной сегментации stl без шума'
+    Noize=50
+    sff.plot_stl_faces_segmentation(mesh.struct_seg, mesh.num_segments, mesh.surface_seg,
+                                    mesh.vertices, title, Noize)
+g=0
+
 

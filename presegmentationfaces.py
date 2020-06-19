@@ -132,12 +132,13 @@ class Pre_segmentation_faces():
         else:
             segment_mat = scipy.io.loadmat(self.path_file + name_safe + '.mat')
             # Извлечение массивов
-            area_segments, num_segments, curve_of_segments, \
+            area_segments, num_segments1, curve_of_segments, \
             color_segments, struct_seg1 = segment_mat['area_segments'], \
                              segment_mat['num_segments'], \
                              segment_mat['curve_of_segments'], \
                              segment_mat['color_segments'],\
                              segment_mat['struct_seg']
+            num_segments = copy.deepcopy(num_segments1[0, :])
             struct_seg=struct_seg1[0]
             # Извлечение списков
             surface_seg = list(range(0,struct_seg[0]))
@@ -156,7 +157,7 @@ class Pre_segmentation_faces():
         # Прорисовка решения (карта сегментации фасет)
         if self.pl[3] == 1:
             title = 'Результат предварительной сегментации stl'
-            sff.plot_stl_faces_segmentation(struct_seg,num_segments,color_segments,surface_seg,
+            sff.plot_stl_faces_segmentation(struct_seg, num_segments, surface_seg,
                                         self.mesh.vertices, title)
 
         self.mesh.surface_seg=surface_seg
