@@ -13,7 +13,10 @@ import random
 #https://trimsh.org/trimesh.visual.color.html
 import trimesh
 import copy
-from vtkplotter import trimesh2vtk, show, Plotter
+
+#from vtkplotter import trimesh2vtk, show, Plotter
+#замена vtkplotter
+from vedo import Mesh, show, Plotter, Points # vtkplotter
 import math
 
 def name_of_results(pl_sphere_cyl):
@@ -46,6 +49,10 @@ def name_of_results(pl_sphere_cyl):
         name_file='Three_spheres_radius64148'
     elif  (pl_sphere_cyl[0]==6)&(pl_sphere_cyl[1]==1):
         name_file='Sphere_plane'
+    elif  (pl_sphere_cyl[0]==9)&(pl_sphere_cyl[1]==1):
+        name_file='SA_A10_t'
+    elif (pl_sphere_cyl[0] == 10) & (pl_sphere_cyl[1] == 1):
+        name_file = 'SA_A10'
     return name_file
 
 def num_of_klasters(pl_sphere_cyl):
@@ -78,6 +85,10 @@ def num_of_klasters(pl_sphere_cyl):
         N_klast=4
     elif  (pl_sphere_cyl[0]==6)&(pl_sphere_cyl[1]==1):
         N_klast=2
+    elif  (pl_sphere_cyl[0]==9)&(pl_sphere_cyl[1]==1):
+        N_klast=30
+    elif  (pl_sphere_cyl[0]==10)&(pl_sphere_cyl[1]==1):
+        N_klast=30
     return N_klast
 
 def tolerances_for_segmentation(pl_sphere_cyl,mesh):
@@ -86,6 +97,8 @@ def tolerances_for_segmentation(pl_sphere_cyl,mesh):
     angleTolerance = 30
     if (pl_sphere_cyl[0]==3)&(pl_sphere_cyl[1]==1):
         curveTolerance = np.std(mesh.Cmin) * 0.05
+    elif (pl_sphere_cyl[0] == 5) & (pl_sphere_cyl[1] == 1):
+        curveTolerance = 0.2
     elif (pl_sphere_cyl[0]==1)&(pl_sphere_cyl[1]==4):
         angleTolerance = 10
 
@@ -106,20 +119,34 @@ def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,t
         for j in range(struct_seg.shape[0]):
             for i in range(num_segments.shape[0]):
                 faces = copy.deepcopy(surface_seg[j][i][0])
-                mesh = trimesh.Trimesh(vertices=vertices,
+                meshFromTrimesh = trimesh.Trimesh(vertices=vertices,
                                        faces=faces,
                                        process=False)
                 # Если объект один
                 if (struct_seg.shape[0] == 1) & (num_segments.shape[0] == 1):
                     #mesh.visual.face_colors = [200, 200, 250, 100]
-                    mesh.visual.face_colors = [200, 200, 250]
+                    meshFromTrimesh.visual.face_colors = [200, 200, 250]
                     #mesh.visual.color.ColorVisuals(mesh=None, face_colors=[200, 200, 250], vertex_colors=None)
                 else:
                     facet = range(faces.shape[0])
-                    mesh.visual.face_colors[facet] = trimesh.visual.random_color()
+                    meshFromTrimesh.visual.face_colors[facet] = trimesh.visual.random_color()
 
-        mesh.show()
+        meshFromTrimesh.show()
 
+    if (1==0):
+        for j in range(struct_seg.shape[0]):
+            for i in range(num_segments.shape[0]):
+                faces = copy.deepcopy(surface_seg[j][i][0])
+                meshFromVedo = Mesh([vertices, faces])
+                meshFromVedo.backcolor('violet').linecolor('tomato').linewidth(2)
+                labs = meshFromVedo.labels('id').c('black')
+
+                # retrieve them as numpy arrays
+                print('points():', meshFromVedo.points())
+                print('faces() :', meshFromVedo.faces())
+
+                show(meshFromVedo, labs, __doc__, viewup='z', axes=1).close()
+                g = 0
     if (1 == 0):
         # Попытка собрать собственное решение по визуализации
         fig = pyplot.figure()
@@ -156,10 +183,6 @@ def plot_stl_vertices_curvature(struct_seg,num_segments,color_segmetns,surface_s
                                    faces=faces,
                                    process=False)
 
-            vtkmeshes = trimesh2vtk(mesh)
-            vtkmeshes1 = trimesh2vtk(mesh)
-
-            # vtkmeshes.pointColors(Cmin, cmap='jet')
             Cmin1, Cmax1 = copy.deepcopy(Cmin), copy.deepcopy(Cmax)
             min_max_Cmin = np.array([np.mean(Cmin) - np.std(Cmin), np.mean(Cmin) + np.std(Cmin)])
             min_max_Cmax = np.array([np.mean(Cmax) - np.std(Cmax), np.mean(Cmax) + np.std(Cmax)])
@@ -173,13 +196,24 @@ def plot_stl_vertices_curvature(struct_seg,num_segments,color_segmetns,surface_s
                 elif Cmax1[i] < min_max_Cmax[0]:
                     Cmax1[i] = min_max_Cmax[0]
 
-            vtkmeshes.pointColors(Cmin1, cmap='jet')
+            try:
+                vtkmeshes = trimesh2vtk(mesh)
+                vtkmeshes1 = trimesh2vtk(mesh)
+                vtkmeshes.pointColors(Cmin1, cmap='jet')
 
-            vtkmeshes1.pointColors(Cmax1, cmap='jet')
+                vtkmeshes1.pointColors(Cmax1, cmap='jet')
 
-            vtkmeshes.addScalarBar(title="Cmin")
-            vtkmeshes1.addScalarBar(title="Cmax")
-            show([vtkmeshes, vtkmeshes1], N=2, bg='w', axes=1)
+                vtkmeshes.addScalarBar(title="Cmin")
+                vtkmeshes1.addScalarBar(title="Cmax")
+                show([vtkmeshes, vtkmeshes1], N=2, bg='w', axes=1)
+            except:
+                pc1 = Points(mesh.vertices, r=10)
+                pc1.cmap("jet", Cmin1)
+
+                pc2 = Points(mesh.vertices, r=10)
+                pc2.cmap("jet", Cmax1)
+
+                show([(mesh, pc1), (mesh, pc2)], N=2, axes=1)
 
 def plot_stl_faces_color_curvature(struct_seg,num_segments,surface_seg,
                                    vertices,curvature_face_klast, title):
@@ -258,19 +292,25 @@ def plot_stl_faces_segmentation(struct_seg1,num_segments1,surface_seg1,
 
 def plot_stl_vertices_klast(struct_seg,num_segments,color_segmetns,surface_seg,vertices,y_kmeans,title):
     """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
+    global pc
     for j in range(struct_seg.shape[0]):
         for i in range(num_segments.shape[0]):
             faces = copy.deepcopy(surface_seg[j][i][0])
             mesh = trimesh.Trimesh(vertices=vertices,
                                    faces=faces,
                                    process=False)
+            try:
+                vtkmeshes = trimesh2vtk(mesh)
 
-            vtkmeshes = trimesh2vtk(mesh)
+                vtkmeshes.pointColors(y_kmeans, cmap='jet')
 
-            vtkmeshes.pointColors(y_kmeans, cmap='jet')
-
-            vtkmeshes.addScalarBar(title="Cmin-Cmax_k_means")
-            show(vtkmeshes)
+                vtkmeshes.addScalarBar(title="Cmin-Cmax_k_means")
+                show(vtkmeshes)
+            except:
+                pc = Points(mesh.vertices, r=10)
+                pc.cmap("jet", y_kmeans)
+                pc.addScalarBar(title="Cmin-Cmax_k_means")
+                show(pc)
 
 def patchnormals_double(Fa,Fb,Fc,Vx,Vy,Vz):
     # Функция вычисления составляющих нормалей в вершинах stl

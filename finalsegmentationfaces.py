@@ -255,16 +255,27 @@ class Final_segmentation_faces():
             surface_seg = list(range(0, struct_seg[0]))
             surfaceNormal_seg = list(range(0, struct_seg[0]))
             surfaceCurve_seg = list(range(0, struct_seg[0]))
-            for i in range(struct_seg[0]):
-                surface_seg[i] = np.array((segment_mat['surface_seg' + str(i)]))#. \
-                    #reshape(segment_mat['surface_seg' + str(i)].shape[1],
-                    #        segment_mat['surface_seg' + str(i)].shape[2])
-                surfaceNormal_seg[i] = np.array((segment_mat['surfaceNormal_seg' + str(i)]))#. \
-                    #reshape(segment_mat['surfaceNormal_seg' + str(i)].shape[1],
-                    #        segment_mat['surfaceNormal_seg' + str(i)].shape[2])
-                surfaceCurve_seg[i] = np.array((segment_mat['surfaceCurve_seg' + str(i)]))#. \
-                    #reshape(segment_mat['surfaceCurve_seg' + str(i)].shape[1],
-                    #        segment_mat['surfaceCurve_seg' + str(i)].shape[2])
+            if (1 == 0):
+            # Если загрузка данных из python
+                for i in range(struct_seg[0]):
+                    surface_seg[i] = np.array((segment_mat['surface_seg' + str(i)]))#. \
+                        #reshape(segment_mat['surface_seg' + str(i)].shape[1],
+                        #        segment_mat['surface_seg' + str(i)].shape[2])
+                    surfaceNormal_seg[i] = np.array((segment_mat['surfaceNormal_seg' + str(i)]))#. \
+                        #reshape(segment_mat['surfaceNormal_seg' + str(i)].shape[1],
+                        #        segment_mat['surfaceNormal_seg' + str(i)].shape[2])
+                    surfaceCurve_seg[i] = np.array((segment_mat['surfaceCurve_seg' + str(i)]))#. \
+                        #reshape(segment_mat['surfaceCurve_seg' + str(i)].shape[1],
+                        #        segment_mat['surfaceCurve_seg' + str(i)].shape[2])
+            else:
+                # Загрузка из матлаба
+                surface_seg1 = segment_mat['surface_seg']
+                surfaceNormal_seg1 = segment_mat['surfaceNormal_seg']
+                surfaceCurve_seg1 = segment_mat['surfaceCurve_seg']
+                for i in range(struct_seg[0]):
+                    surface_seg[i] = surface_seg1[0, i].astype('int64')
+                    surfaceNormal_seg[i] = surfaceNormal_seg1[0, i].astype('float64')
+                    surfaceCurve_seg[i] = surfaceCurve_seg1[0, i].astype('float64')
         # Прорисовка решения (карта сегментации фасет)
         if self.pre.pl[4] == 1:
             title = 'Результат окончательной сегментации stl'

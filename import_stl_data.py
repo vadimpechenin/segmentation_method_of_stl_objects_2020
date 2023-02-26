@@ -32,7 +32,7 @@ class Import_stl_data():
                 mesh.faces = copy.deepcopy(mesh_load.faces)
                 mesh.normals = copy.deepcopy(mesh_load.face_normals)
             else:
-                mesh_load_mat = scipy.io.loadmat(self.path_file + name_safe + '_matlab.mat')
+                mesh_load_mat = scipy.io.loadmat(self.path_file + name_safe + '_matlab.mat') #+ '_matlab.mat'
                 vertices = np.array(mesh_load_mat['v'])
                 faces = np.array(mesh_load_mat['f'])
                 for j in range(faces.shape[0]):

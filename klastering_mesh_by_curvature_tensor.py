@@ -5,8 +5,10 @@ import scipy.io
 import numpy as np
 import copy
 import trimesh
-from vtkplotter import trimesh2vtk, show
 
+#from vtkplotter import trimesh2vtk, show
+#замена vtkplotter
+from vedo import mesh, show
 
 import matplotlib.pyplot as plt
 
