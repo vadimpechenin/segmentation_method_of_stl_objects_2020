@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8cbadb22-86c7-4c1f-87f8-3e17f03eb290" name="Default Changelist" comment="Visualization coloring mesh vertex">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finalsegmentationfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/finalsegmentationfaces.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/import_stl_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/import_stl_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_variables_for_segmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_variables_for_segmentation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/presegmentationfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/presegmentationfaces.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/Three_spheres_radius64148_stage_1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/results/Three_spheres_radius64148_stage_1.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" beforeDir="false" afterPath="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supporting_functions_of_segmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/supporting_functions_of_segmentation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
