@@ -1,4 +1,4 @@
-#Использование библеотеки trimesh 3.5.22
+#Использование библеотеки trimesh 3.19.4
 import trimesh
 import tkinter.filedialog
 import scipy.io
@@ -12,11 +12,11 @@ import copy
 
 class Import_stl_data():
     """Класс для импорта структуры stl из файла"""
-    def __init__(self,pl_zagr,pl,pl_sphere_cyl,path_file):
-        self.pl_zagr=pl_zagr
-        self.pl=pl
-        self.pl_sphere_cyl=pl_sphere_cyl
-        self.path_file=path_file
+    def __init__(self,ex_m_var):
+        self.pl_zagr=ex_m_var.pl_zagr
+        self.pl=ex_m_var.pl
+        self.pl_sphere_cyl=ex_m_var.pl_sphere_cyl
+        self.path_file=ex_m_var.path_file
     def import_data(self):
         name_safe=sff.name_of_results(self.pl_sphere_cyl)
         if (self.pl_zagr[0]==1):

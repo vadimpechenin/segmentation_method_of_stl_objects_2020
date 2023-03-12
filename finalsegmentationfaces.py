@@ -2,7 +2,6 @@ import supporting_functions_of_segmentation as sff
 import scipy.io
 import numpy as np
 import copy
-import trimesh
 
 class Final_segmentation_faces():
     """Класс расчета структуры предварительной сегментации фасет"""

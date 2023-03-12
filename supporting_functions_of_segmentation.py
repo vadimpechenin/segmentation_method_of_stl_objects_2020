@@ -1,11 +1,7 @@
 """ Модуль вспомогательных функций для segmentation_method_of_stl_objects"""
-from mpl_toolkits import mplot3d
 import matplotlib.colors as mcolors
-from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import pyplot
 import matplotlib.cm as cm
-from colorspacious import cspace_converter
-from collections import OrderedDict
 from scipy import interpolate
 import numpy as np
 import random
@@ -133,47 +129,6 @@ def plot_stl_color(struct_seg,num_segments,color_segmetns,surface_seg,vertices,t
 
         meshFromTrimesh.show()
 
-    if (1==0):
-        for j in range(struct_seg.shape[0]):
-            for i in range(num_segments.shape[0]):
-                faces = copy.deepcopy(surface_seg[j][i][0])
-                meshFromVedo = Mesh([vertices, faces])
-                meshFromVedo.backcolor('violet').linecolor('tomato').linewidth(2)
-                labs = meshFromVedo.labels('id').c('black')
-
-                # retrieve them as numpy arrays
-                print('points():', meshFromVedo.points())
-                print('faces() :', meshFromVedo.faces())
-
-                show(meshFromVedo, labs, __doc__, viewup='z', axes=1).close()
-                g = 0
-    if (1 == 0):
-        # Попытка собрать собственное решение по визуализации
-        fig = pyplot.figure()
-        ax = mplot3d.Axes3D(fig)
-        for j in range(struct_seg.shape[0]):
-            for i in range(num_segments.shape[0]):
-                faces = copy.deepcopy(surface_seg[j][i][0])
-                v0 = vertices[faces[:, 0]]
-                v1 = vertices[faces[:, 1]]
-                v2 = vertices[faces[:, 2]]
-                vectors = np.zeros([v0.shape[0], 3, 3])
-                for ij in range(v0.shape[0]):
-                    vectors[ij, :, :] = np.array([v0[ij, :], v1[ij, :], v2[ij, :]])
-                    vtx = np.array([v0[ij, :], v1[ij, :], v2[ij, :]])
-                    tri = mplot3d.art3d.Poly3DCollection([vtx])
-                    # tri.set_color(colors.rgb2hex(sp.rand(3)))
-                    # tri.set_edgecolor('k')
-                    ax.add_collection3d(tri)
-
-        # scale = [vertices[:,0].max-vertices[:,0].min,vertices[:,1].max-vertices[:,1].min,vertices[:,2].max-vertices[:,2].min]
-        # ax.auto_scale_xyz(scale, scale, scale)
-        ax.set_xlim(np.amin(vertices[:][0]) - 2, np.amax(vertices[:][0]) + 2)
-        ax.set_ylim(np.amin(vertices[:][1]) - 2, np.amax(vertices[:][1]) + 2)
-        ax.set_zlim(np.amin(vertices[:][2]) - 2, np.amax(vertices[:][2]) + 2)
-        ax.auto_scale_xyz(1, 1, 1)
-        pyplot.show()
-
 def plot_stl_vertices_curvature(struct_seg,num_segments,color_segmetns,surface_seg,vertices,Cmin,Cmax,title):
     """Функция для прорисовки вершин stl объекта, основанных на цвете по кривизне"""
     for j in range(struct_seg.shape[0]):
@@ -226,14 +181,8 @@ def plot_stl_faces_color_curvature(struct_seg,num_segments,surface_seg,
                                    process=False) for i in range(2)]
 
             Cmin1, Cmax1 = copy.deepcopy(curvature_face_klast[:,0]), copy.deepcopy(curvature_face_klast[:,1])
-            #np.max(Cmin1)-np.min(Cmin1)
             meshes[0].visual.face_colors = trimesh.visual.interpolate(curvature_face_klast[:,0], color_map='jet')
             meshes[1].visual.face_colors = trimesh.visual.interpolate(curvature_face_klast[:,1], color_map='jet')
-            # create a scene containing the mesh and colorbar
-           # pyplot.pcolor(Cmin1)
-            #pyplot.colorbar()
-            #scene = trimesh.Scene([mesh])
-            # setup the normalization and the colormap
             normalize = mcolors.Normalize(vmin=np.min(Cmin1), vmax=np.max(Cmin1))
             colormap = cm.jet
             scalarmappaple = cm.ScalarMappable(norm=normalize, cmap=colormap)
@@ -242,15 +191,8 @@ def plot_stl_faces_color_curvature(struct_seg,num_segments,surface_seg,
             vtkmeshes = [trimesh2vtk(m) for m in meshes]
             vtkmeshes[0].addScalarBar(title="Cmin")
             vtkmeshes[1].addScalarBar(title="Cmax")
-            #vp = Plotter(title="Cmin", interactive=0, axes=3)
-            #vp +=vtkmeshes
-            #vp.show(resetcam=0)
-            #vp.show()
             show([vtkmeshes[0], vtkmeshes[1]], interactive=0, N=2, bg='w', axes=1) #bg2='wheat',
 
-            # show the scene wusing
-            #scene.show()
-            #mesh.show()
 
 def plot_stl_faces_segmentation(struct_seg1,num_segments1,surface_seg1,
                                    vertices, title, noize=None):

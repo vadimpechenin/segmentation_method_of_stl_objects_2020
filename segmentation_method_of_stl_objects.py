@@ -4,13 +4,7 @@
  triangulated CAD meshes - основной алгоритм сегментации
  2. Mark Meyer. Discrete Differential-Geometry Operators
  for Triangulated 2-Manifolds- вычисление кривизн 1 и 2 в вершинах
- Версия для MATLAB Segmentation_by_curvature_tensor_Universal_2020.m
 """
-# Импорт библиотек
-import numpy as np
-
-#Использование библеотеки trimesh 3.5.22
-import trimesh
 
 #Импорт основных переменных метода
 from main_variables_for_segmentation import Main_variables
@@ -30,7 +24,7 @@ from finalsegmentationfaces import Final_segmentation_faces
 
 ex_m_var=Main_variables()
 
-stl_data=Import_stl_data(ex_m_var.pl_zagr,ex_m_var.pl,ex_m_var.pl_sphere_cyl,ex_m_var.path_file)
+stl_data=Import_stl_data(ex_m_var)
 # 1 Этап. Загрузка структуры stl
 mesh = stl_data.import_data()
 # 2 Этап. Вычисления тензора кривизн (главных кривизн)
