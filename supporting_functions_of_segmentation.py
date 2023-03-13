@@ -433,11 +433,8 @@ def patchcurvature_2014(mesh):
         # Вписать фасеты в уравнение второй степени
         # f(x,y) = ax^2 + by^2 + cxy + dx + ey + f
         function_of_curve = np.array([x[:]** 2, y[:]** 2, x[:]*y[:], x[:], y[:], np.ones([vert_rot.shape[0]])]).T
-        #abcdef=np.zeros([1,function_of_curve.shape[1]])
         abcdef=np.linalg.lstsq(function_of_curve,f)
         a, b, c = abcdef[0][0], abcdef[0][1], abcdef[0][2]
-        #for k in range(function_of_curve.shape[1]):
-        #   abcdef[:,k]=function_of_curve[:,k]/f
         # Создание матрицы Гессиана
         # H =  [2*a c;c 2*b]
         Dxx, Dxy, Dyy  = 2 * a, c, 2 * b
@@ -456,7 +453,6 @@ def ExtractSurface_by_curve_2020_2_curves(nodes, faces, normals, curves, targetP
     """Функция для выбора группы фасет, связанных с целевым по критериям главных кривизн"""
     # 1. поиск узла, ближайшего к интересующей точке и вектора отсечения граней
     nodeIndex =node_grain(nodes,targetPoint)
-
 
     #Фильтр граней по вектору отсечения
     angles = ((curves[:, 0] - np.full((curves.shape[0],1),targetVector[0])[:,0])** 2 +
