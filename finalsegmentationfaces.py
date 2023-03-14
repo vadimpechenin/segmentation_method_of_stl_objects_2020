@@ -254,7 +254,7 @@ class Final_segmentation_faces():
             surface_seg = list(range(0, struct_seg[0]))
             surfaceNormal_seg = list(range(0, struct_seg[0]))
             surfaceCurve_seg = list(range(0, struct_seg[0]))
-            if (1 == 0):
+            if (1 == 1):
             # Если загрузка данных из python
                 for i in range(struct_seg[0]):
                     surface_seg[i] = np.array((segment_mat['surface_seg' + str(i)]))#. \
