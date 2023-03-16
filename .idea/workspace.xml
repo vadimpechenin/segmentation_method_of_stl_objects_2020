@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8cbadb22-86c7-4c1f-87f8-3e17f03eb290" name="Default Changelist" comment="Visualization coloring mesh vertex">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finalsegmentationfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/finalsegmentationfaces.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/klastering_mesh_by_curvature_tensor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_variables_for_segmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_variables_for_segmentation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/Three_spheres_radius64148.mat" beforeDir="false" afterPath="$PROJECT_DIR$/results/Three_spheres_radius64148.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" beforeDir="false" afterPath="$PROJECT_DIR$/segmentation_method_of_stl_objects.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supporting_functions_of_segmentation.py" beforeDir="false" afterPath="$PROJECT_DIR$/supporting_functions_of_segmentation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,14 +59,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/JAVA/Programms/SoftwareSystemForMonitoringOperationalDataAboutTheProduct/SmartManufactureStockroom/Tools/firstVersionOfDB&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "D:/PYTHON/Programms/Segmentation_ex_2/Segmentation_stl_py_2020/stl_data"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PYTHON\Programms\Segmentation_ex_2\Segmentation_stl_py_2020\stl_data" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="segmentation_method_of_stl_objects" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Segmentation_stl_py_2020" />
@@ -147,7 +153,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/segmentation_method_of_stl_objects.py</url>
-          <line>57</line>
+          <line>56</line>
           <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -159,6 +165,11 @@
           <url>file://$PROJECT_DIR$/supporting_functions_of_segmentation.py</url>
           <line>448</line>
           <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/segmentation_method_of_stl_objects.py</url>
+          <line>30</line>
+          <option name="timeStamp" value="128" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

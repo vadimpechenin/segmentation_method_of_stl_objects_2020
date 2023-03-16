@@ -55,6 +55,5 @@ if ex_m_var.pl[5] == 1:
     Noize = 50
     sff.plot_stl_faces_segmentation(mesh.struct_seg, mesh.num_segments, mesh.surface_seg,
                                     mesh.vertices, title, Noize)
-g=0
 
 

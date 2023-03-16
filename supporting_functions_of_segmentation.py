@@ -12,7 +12,7 @@ import copy
 
 #from vtkplotter import trimesh2vtk, show, Plotter
 #замена vtkplotter
-from vedo import Mesh, show, Plotter, Points # vtkplotter
+from vedo import show, Plotter, Points # vtkplotter
 import math
 
 def name_of_results(pl_sphere_cyl):
